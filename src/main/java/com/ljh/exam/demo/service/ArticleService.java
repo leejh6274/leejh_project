@@ -2,6 +2,7 @@ package com.ljh.exam.demo.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ljh.exam.demo.repository.ArticleRepository;
@@ -9,12 +10,10 @@ import com.ljh.exam.demo.vo.Article;
 
 @Service
 public class ArticleService {
-   private ArticleRepository articleRepository;
+
+	@Autowired
+	private ArticleRepository articleRepository;
    
-   public ArticleService() {
-      this.articleRepository = articleRepository;
-      
-   }
    
    public Article getArticle(int id) {
       return articleRepository.getArticle(id);
@@ -24,8 +23,9 @@ public class ArticleService {
       return articleRepository.getArticles();
    }
    
-   public Article writeArticle(String title, String body) {
-      return articleRepository.writeArticle(title, body);
+   public int writeArticle(String title, String body) {
+      articleRepository.writeArticle(title, body);
+      return articleRepository.getLastInsertId();
    }
    
    public void deleteArticle(int id) {
