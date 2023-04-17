@@ -22,7 +22,7 @@ public interface MemberRepository {
 			`name` = #{name},
 			nickname = #{nickname},
 			cellphoneNo = #{cellphoneNo},
-			email = #{email};
+			email = #{email}
 			"""
 	)
 	public void join(@Param("loginId") String loginId, @Param("loginPw") String loginPw, @Param("name") String name, @Param("nickname") String nickname, @Param("cellphoneNo") String cellphoneNo, @Param("email") String email);
@@ -51,8 +51,15 @@ public interface MemberRepository {
 			FROM `member` AS M
 			WHERE M.loginId = #{loginId}
 			""")
-	Member getMemberByLoginId(@Param("loginId")String loginId);
+	Member getMemberByLoginId(@Param("loginId") String loginId);
 	
+	@Select("""
+			SELECT *
+			FROM `member` AS M
+			WHERE M.email = #{email}
+			""")
+	Member getMemberByNameAndEmail(@Param("name")String name, @Param("email")String email);
+
 
 	}
 
