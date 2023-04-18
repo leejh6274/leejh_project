@@ -7,4 +7,4 @@ spring:
     username: sbsst
     password: sbs123414
 mybatis:
-    type-aliases-package: com.ljh.exam.demo.vo
+  type-aliases-package: com.ljh.exam.demo.vo
