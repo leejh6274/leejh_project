@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ljh.exam.demo.service.MemberService;
 import com.ljh.exam.demo.utill.Ut;
 import com.ljh.exam.demo.vo.Member;
+import com.ljh.exam.demo.vo.ResultData;
 
 @Controller
 public class UsrMemberContoller {
@@ -23,19 +24,43 @@ public class UsrMemberContoller {
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public Object doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
-		int id = memberService.join(loginId, loginPw, name, nickname, cellphoneNo, email);
 		
-		if ( id == -1 ) {
-			return Ut.f("해당 로그인 아이디(%s)는 이미 사용중입니다.", loginId);
+		if ( Ut.empty(loginId)) {
+			return ResultData.from("F-1", "loginId(을)를 입력해 주세요.");
 		}
 		
-		if ( id == -2 ) {
-			return Ut.f("해당 이름(%s)과 이메일(%s)은 이미 사용중입니다.", name, email);
+		if ( Ut.empty(loginPw)) {
+			return ResultData.from("F-2", "loginPw(을)를 입력해 주세요.");
 		}
 		
-		Member member = memberService.getMemberById(id);
+		if ( Ut.empty(name)) {
+			return ResultData.from("F-3", "name(을)를 입력해 주세요.");
+		}
 		
-		return member;
+		if ( Ut.empty(nickname)) {
+			return ResultData.from("F-4", "nickname(을)를 입력해 주세요.");
+		}
+		
+		if ( Ut.empty(cellphoneNo)) {
+			return ResultData.from("F-5", "cellphoneNo(을)를 입력해 주세요.");
+		}
+		
+		if ( Ut.empty(email)) {
+			return ResultData.from("F-6", "email(을)를 입력해 주세요.");
+		}
+		
+		
+		//S-1
+		//회원가입이 완료되었습니다.
+		ResultData joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNo, email);
+		
+		if(joinRd.isFail()) {
+			return joinRd;
+		}
+
+		Member member = memberService.getMemberById((int)joinRd.getData1());
+		
+		return ResultData.newData(joinRd, member);
 	}
    
    @RequestMapping("/usr/member/getMembers")
