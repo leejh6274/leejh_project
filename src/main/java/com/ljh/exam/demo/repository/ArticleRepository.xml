@@ -15,7 +15,7 @@
 		SELECT *
 		FROM article
 		ORDER BY
-		id DESC
+		id ASC
 	</select>
 
 	<select id="getArticle" resultType="Article">
