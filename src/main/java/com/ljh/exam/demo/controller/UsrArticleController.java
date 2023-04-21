@@ -15,7 +15,6 @@ import com.ljh.exam.demo.vo.ResultData;
 import com.ljh.exam.demo.vo.Rq;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrArticleController {
@@ -51,6 +50,11 @@ public class UsrArticleController {
       return ResultData.from(writeArticleRd.getResultCode(), writeArticleRd.getMsg(), "article", article);
    }
 
+   @RequestMapping("/usr/article/write")
+   public String showWrite() {
+	   return "usr/article/write";
+   }
+   
    @RequestMapping("/usr/article/list")
    public String showList(HttpServletRequest req, Model model) {
      
