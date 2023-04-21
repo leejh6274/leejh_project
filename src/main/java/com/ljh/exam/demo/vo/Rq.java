@@ -37,8 +37,8 @@ public class Rq{
 	    this.loginedMemberId = loginedMemberId;
     }
 
-	public void printHistroyBackjs(String msg) {
-		resp.setContentType("text/html; charset=UTF-8");
+	public void printHistroyBackjs(String msg) {/*
+		resp.setContentType("text/html; charset=UTF-8");             => js.jsp안에 자바스크립트로 등록해서 주석친 애들 필요 없어짐.
 		
 		print("<script>");
 		
@@ -47,7 +47,10 @@ public class Rq{
 		}
 		print("history.back();");
 		
-		print("</script>");
+		print("</script>");*/
+		resp.setContentType("text/html; charset=UTF-8");
+		
+		print(Ut.jsHistoryBack(msg));
 	}
 	
 	public void print(String str) {
@@ -70,5 +73,13 @@ public class Rq{
 	public void logout() {
 		session.removeAttribute("loginedMemberId");
 	}
+	
+	public String historyBackJsOnview(String msg) {
+		req.setAttribute("msg", msg);
+		req.setAttribute("historyBack", true);
+		return "common/js";
+	}
+	
+	
 	
 }
