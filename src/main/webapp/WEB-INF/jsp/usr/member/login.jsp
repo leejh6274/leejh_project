@@ -8,20 +8,23 @@
 	<div class="container mx-auto">
 		<form class="table-box-type-1" method="POST" action="../member/doLogin">
 			<table>
+				<colgroup>
+					<col width="200"/>
+				</colgroup>
 				<tbody>
 					<tr>
 						<th>로그인아이디</th>
-						<td><input type="text" name="loginId" placeholder="아이디를 입력해주세요."/></td>
+						<td><input type="text" name="loginId" class="w-96 input input-bordered w-full max-w-xs" placeholder="아이디를 입력해주세요."/></td>
 					</tr>
 					<tr>
 						<th>로그인비밀번호</th>
-						<td><input type="text" name="loginPw" placeholder="비밀번호를 입력해주세요."/></td>
+						<td><input type="text" name="loginPw" class="w-96 input input-bordered w-full max-w-xs" placeholder="비밀번호를 입력해주세요."/></td>
 					</tr>
 					<tr>
 						<th>로그인</th>
 						<td>
-							<input type="submit" value="로그인"/>
-							<button type="button" onclick="history.back();">뒤로가기</button>
+							<input type="submit" class="btn btn-active btn-primary" value="로그인"/>
+							<button type="button" class="btn btn-active btn-primary" onclick="history.back();">뒤로가기</button>
 						</td>
 					</tr>
 				</tbody>
