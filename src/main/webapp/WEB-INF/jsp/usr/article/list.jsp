@@ -39,7 +39,15 @@
         </tbody>
       </table>
     </div>
-  </div>
+    
+    <div class="page-menu mt-5 flex justify-center">
+    	<div class="btn-group ">
+			<c:forEach begin="1" end="10" var="i">
+				<a class="btn btn-sm ${param.page == i ? 'btn-active' : ''} " href="?page=${i}">${i}</a>    <!-- url에서 가져오는 데이터는 앞에 param.을 붙여야 함 -->
+			</c:forEach>
+		</div>
+    </div>
+</div>    
 </section>
 
 <%@include file="../common/foot.jspf" %>
