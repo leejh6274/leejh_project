@@ -25,8 +25,22 @@ public class ArticleService {
       return article;
    }
 
-   public List<Article> getForPrintArticles(int actorId, int boardId) {
-	   List<Article> articles = articleRepository.getForPrintArticles(boardId);
+   public List<Article> getForPrintArticles(int actorId, int boardId, int itemsCountInAPage, int page) {
+	   
+	   /*
+	    SELECT *
+	    FROM article
+	    WHERE boardId = 1
+	    ORDER BY id DESC
+	    LIMIT 0, 10
+	    */
+	   
+	   int limitStart = (page - 1) * itemsCountInAPage;     //limitStart : 2페이지라면 11부터 20까지의 게시물을 가져와야한다. 쿼리문(LIMIT)을 작성하기위한 변수
+	   int limitTake = itemsCountInAPage;					//limitTake : 페이지당 가져올 게시물의 수, 쿼리문(LIMIT)을 작성하기위한 변수
+	   
+	   
+	   List<Article> articles = articleRepository.getForPrintArticles(boardId, limitStart, limitTake);
+	   
 	   for(Article article : articles) {
 		   updateForPrintData(actorId, article);
 	   }

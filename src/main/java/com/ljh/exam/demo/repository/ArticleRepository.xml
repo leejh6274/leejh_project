@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper
-	namespace="com.ljh.exam.demo.repository.ArticleRepository">
+<mapper	namespace="com.ljh.exam.demo.repository.ArticleRepository">
 	<insert id="writeArticle">
 		INSERT INTO article
 		SET regDate = NOW(),
@@ -22,6 +21,9 @@
          WHERE A.boardId = #{boardId}
       </if>
       ORDER BY id DESC
+      <if test="boardId != -1">
+		 LIMIT #{limitStart}, #{limitTake}
+      </if>
    </select>
 
 	<select id="getForPrintArticle" resultType="Article">

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ljh.exam.demo.service.ArticleService;
@@ -14,8 +15,6 @@ import com.ljh.exam.demo.vo.Article;
 import com.ljh.exam.demo.vo.Board;
 import com.ljh.exam.demo.vo.ResultData;
 import com.ljh.exam.demo.vo.Rq;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class UsrArticleController {
@@ -60,7 +59,7 @@ public class UsrArticleController {
    }
    
    @RequestMapping("/usr/article/list")
-   public String showList(Model model, int boardId) {
+   public String showList(Model model, @RequestParam(defaultValue = "1") int boardId, @RequestParam(defaultValue = "1") int page) { //디폴트밸류를 1로주면 그냥 article/list했을 경우 기본값으로 1번 게시판으로 가짐
      
 	  Board board = boardService.getBoardById(boardId);
 	  
@@ -68,7 +67,9 @@ public class UsrArticleController {
 		  return rq.historyBackJsOnview(Ut.f("%d번 게시판은 존재하지 않습니다.", boardId));
 	  }
 	  int articlesCount = articleService.getArticlesCount(boardId);
-      List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId);
+	  int itemsCountInAPage = 10; //한페이지에 10개 보여주기
+	  
+      List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId, itemsCountInAPage, page);
       
       model.addAttribute("board", board);
       model.addAttribute("articlesCount", articlesCount);
