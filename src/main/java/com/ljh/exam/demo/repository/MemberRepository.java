@@ -11,63 +11,49 @@ import com.ljh.exam.demo.vo.Member;
 
 @Mapper
 public interface MemberRepository {
+   @Insert("""
+         INSERT INTO `member`
+         SET regDate = NOW(),
+         updateDate = NOW(),
+         loginId = #{loginId},
+         loginPw = #{loginPw},
+         `name` = #{name},
+         nickname = #{nickname},
+         cellphoneNo = #{cellphoneNo},
+         email = #{email}
+         """)
+   void join(@Param("loginId") String loginId, @Param("loginPw") String loginPw, @Param("name") String name, @Param("nickname") String nickname, @Param("cellphoneNo") String cellphoneNo, @Param("email") String email);
 
-	@Select("""
-			SELECT *
-			FROM `member`
-			ORDER BY
-			id DESC
-			""")
-	public List<Member> getMembers();
-	
-	
-//	public void modifyMember(@Param("loginPw")String loginPw,@Param("name")String name);
+   @Select("""
+         SELECT *
+         FROM `member`
+         ORDER BY
+         id DESC
+         """)
+   List<Member> getMembers();
 
-//	public void deleteMember(@Param("loginId")String loginId);
-	
-	@Select("SELECT LAST_INSERT_ID()")
-	int getLastInsertId();
-	
-	
-	@Select("""
-			SELECT * 
-			FROM `member` AS M
-			WHERE M.id = #{id}
-			""")
-	Member getMemberById(@Param("id") int id);
-	
-	
-	@Insert("""
-			
-			INSERT INTO `member`
-			SET regDate = NOW(),
-			updateDate = NOW(),
-			loginId = #{loginId},
-			loginPw = #{loginPw},
-			`name` = #{name},
-			nickname = #{nickname},
-			cellphoneNo = #{cellphoneNo},
-			email = #{email}""")
-	void join(@Param("loginId") String loginId, @Param("loginPw") String loginPw, @Param("name") String name,
-			@Param("nickname") String nickname, @Param("cellphoneNo") String cellphoneNo, @Param("email") String email);
+   @Select("SELECT LAST_INSERT_ID()")
+   int getLastInsertId();
+   
+   @Select("""
+         SELECT *
+         FROM `member` AS M
+         WHERE M.id = #{id}
+         """)
+   Member getMemberById(@Param("id") int id);
 
-	
-	@Select("""
-			SELECT * 
-			FROM `member` AS M
-			WHERE M.loginId = #{loginId}
-			""")
-	Member getMemberByLoginId(@Param("loginId") String loginId);
+   @Select("""
+         SELECT *
+         FROM `member` AS M
+         WHERE M.loginId = #{loginId}
+         """)
+   Member getMemberByLoginId(@Param("loginId") String loginId);
 
-
-	@Select("""
-			SELECT * 
-			FROM `member` AS M
-			WHERE M.name = #{name},
-			AND M.email = #{email}
-			""")
-	Member getMemberByNameAndEmail(@Param("name")String name, @Param("email")String email);
-
-
-
+   @Select("""
+         SELECT *
+         FROM `member` AS M
+         WHERE M.name = #{name}
+         AND M.email = #{email}
+         """)
+   Member getMemberByNameAndEmail(@Param("name") String name, @Param("email") String email);
 }

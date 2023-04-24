@@ -2,6 +2,10 @@ package com.ljh.exam.demo.vo;
 
 import java.io.IOException;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
 import com.ljh.exam.demo.service.MemberService;
 import com.ljh.exam.demo.utill.Ut;
 
@@ -10,6 +14,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 
+/*rq가 자동으로 의존성주입 된다 = component
+객체가 하나만 존재하는게 아니라 각자의 요청에 따라 다 있어야 한다 = scope*/
+@Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Rq{
 	@Getter
 	private boolean isLogined;
@@ -41,6 +49,8 @@ public class Rq{
 	    this.isLogined = isLogined;
 	    this.loginedMemberId = loginedMemberId;
 	    this.loginedMember = loginedMember;
+	    
+	    this.req.setAttribute("rq", this);
     }
 
 	public void printHistroyBackjs(String msg) {/*
