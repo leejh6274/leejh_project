@@ -11,7 +11,15 @@ params.id = parseInt('${param.id}');
 
 <script>
 function ArticleDetail__increaseHitCount() {
-	$.get( 										//(겟은 form역할)
+	const localStorageKey = 'article__' + params.id + '__viewDone';
+	
+	if(localStorage.getItem(localStorageKey)) {
+		return;
+	}
+	
+	localStorage.setItem(localStorageKey, true);
+	
+	$.get( 										  //(겟은 form역할)
 		'../article/doIncreaseHitCountRd', {      //(''안에 얘는 액션역할)
 			id: params.id,
 			ajaxMode : 'Y'
@@ -25,7 +33,7 @@ function ArticleDetail__increaseHitCount() {
 		//ArticleDetail__increaseHitCount();
 		
 		//임시코드
-		setTimeout(ArticleDetail__increaseHitCount, 3000); //새로고침으로 조회수 뻥튀기 금지시키려고 시간 값 주기(3초)
+		setTimeout(ArticleDetail__increaseHitCount, 1000); //새로고침으로 조회수 뻥튀기 금지시키려고 시간 값 주기(1초)
 	})
 </script>
 
