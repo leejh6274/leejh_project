@@ -47,15 +47,16 @@
     	<c:set var="endPage" value="${page + pageMenuArmLen <= pagesCount ? page + pageMenuArmLen : pagesCount }"/>
     	
     	<c:if test="${startPage > 1 }">
-    		<a class="btn btn-sm" href="?page=1">1</a>
+    		<a class="btn btn-sm" href="?page=1&boardId=${boardId }">1</a>
+    		<a class="btn btn-sm btn-disabled">...</a>
     	</c:if>
 		<c:forEach begin="${startPage }" end="${endPage}" var="i">
-			<a class="btn btn-sm ${page == i ? 'btn-active' : ''} " href="?page=${i}">${i}</a>    <!-- url에서 가져오는 데이터는 앞에 param.을 붙여야 함 -->
+			<a class="btn btn-sm ${page == i ? 'btn-active' : ''} " href="?page=${i}&boardId=${boardId }">${i}</a>    <!-- url에서 가져오는 데이터는 앞에 param.을 붙여야 함 -->
 		</c:forEach>
 		
 		<c:if test="${endPage <pagesCount }">
 			<a class="btn btn-sm btn-disabled">...</a>
-			<a class="btn btn-sm" href="?page=${pagesCount}">${pagesCount }</a>
+			<a class="btn btn-sm" href="?page=${pagesCount}&boardId=${boardId }">${pagesCount }</a>
 		</c:if>
 		</div>
     </div>
