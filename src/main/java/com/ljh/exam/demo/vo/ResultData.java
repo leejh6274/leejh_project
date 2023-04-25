@@ -1,7 +1,9 @@
 package com.ljh.exam.demo.vo;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 public class ResultData<DT> {
 
 	// S-1, S-2, S-3 성공
