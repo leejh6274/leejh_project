@@ -59,7 +59,10 @@ public class UsrArticleController {
    }
    
    @RequestMapping("/usr/article/list")
-   public String showList(Model model, @RequestParam(defaultValue = "1") int boardId, @RequestParam(defaultValue = "1") int page) { //디폴트밸류를 1로주면 그냥 article/list했을 경우 기본값으로 1번 게시판으로 가짐
+   public String showList(Model model, @RequestParam(defaultValue = "1") int boardId, 
+		   @RequestParam(defaultValue = "1") int page, 
+		   @RequestParam(defaultValue = "title, body") String searchKeywordTypeCode, 
+   		   @RequestParam(defaultValue = "") String searchKeyword) { //디폴트밸류를 1로주면 그냥 article/list했을 경우 기본값으로 1번 게시판으로 가짐
      
 	  Board board = boardService.getBoardById(boardId);
 	  
@@ -68,11 +71,11 @@ public class UsrArticleController {
 	  }
 	  
 	  
-	  int articlesCount = articleService.getArticlesCount(boardId);
+	  int articlesCount = articleService.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword);
 	  int itemsCountInAPage = 10; //한페이지에 10개 보여주기
 	  int pagesCount = (int)Math.ceil((double) articlesCount / itemsCountInAPage);
 	  
-      List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId, itemsCountInAPage, page);
+      List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId, searchKeywordTypeCode, searchKeyword, itemsCountInAPage, page);
       
       model.addAttribute("board", board);
       model.addAttribute("boardId", boardId);
