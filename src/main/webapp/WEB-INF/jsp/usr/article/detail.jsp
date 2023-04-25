@@ -25,7 +25,7 @@ function ArticleDetail__increaseHitCount() {
 		//ArticleDetail__increaseHitCount();
 		
 		//임시코드
-		setTimeout(ArticleDetail__increaseHitCount, 3000); //새로고침으로 조회수 뻥튀기 금지시키려고 시간 값 주기
+		setTimeout(ArticleDetail__increaseHitCount, 3000); //새로고침으로 조회수 뻥튀기 금지시키려고 시간 값 주기(3초)
 	})
 </script>
 
