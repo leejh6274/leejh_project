@@ -64,7 +64,13 @@ function ArticleDetail__increaseHitCount() {
           <tr>
             <th>조회수</th>
             <td>
-            	<span class="badge badge-primary article-detail__hit-count">${article.hitCount }</span>
+            	<span class="text-red-700 article-detail__hit-count">${article.hitCount }</span>
+            </td>
+          </tr>
+          <tr>
+            <th>추천수</th>
+            <td>
+            	<span class="text-red-700">${article.extra__goodReactionPoint }</span>
             </td>
           </tr>
           <tr>
