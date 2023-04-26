@@ -68,9 +68,23 @@ function ArticleDetail__increaseHitCount() {
             </td>
           </tr>
           <tr>
-            <th>추천수</th>
+            <th>추천</th>
             <td>
-            	<span class="text-red-700">${article.extra__goodReactionPoint }</span>
+            	<div class="flex items-center">
+            		<span class="text-red-700">${article.extra__goodReactionPoint }</span>
+            		<span>&nbsp;</span>
+            		
+            		<c:if test="${actorCanMakeReactionPoint }">    <!-- 추천/비추천을 하기위해 로그인이 되어있는지 확인하는 c:if test -->
+            			<button class="btn btn-xs btn-outline btn-primary">
+            				좋아요 😊
+            			</button>
+            			<span>&nbsp;</span>
+            			<button class="btn btn-xs btn-outline btn-secondary">
+            				싫어요 😟
+            			</button>
+            		</c:if>
+            		
+            	</div>
             </td>
           </tr>
           <tr>
