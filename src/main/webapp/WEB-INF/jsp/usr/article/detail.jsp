@@ -36,6 +36,7 @@
 </script>
 
 <script>
+	//댓글 작성 관련
 	let ReplyWrite__submitForm = false;
 	function ReplyWrite__submitForm(form){
 		if (ReplyWrite__submitFormDone)
@@ -162,13 +163,18 @@
       </colgroup>
         <tbody>
           <tr>
+            <th>relId</th>
+            <td>${article.id }</td>
+          </tr>
+        
+          <tr>
             <th>작성자</th>
             <td>${rq.loginedMember.nickname}</td>
           </tr>
           <tr>
             <th>내용</th>
             <td>
-            	<textarea class="w-full textarea textarea-bordered" name="body" placeholder="내용" >${article.body }</textarea>
+            	<textarea class="w-full textarea textarea-bordered" name="body" placeholder="내용" ></textarea>
             </td>
           </tr>
           <tr>
@@ -186,4 +192,13 @@
 		</c:if>
   	</div>
 </section>
+
+<section class="mt-5">
+	<div class="container mx-auto px-3">
+		<h1>댓글리스트 (${repliesCount })</h1>
+	</div>
+</section>
+
+
+
 <%@include file="../common/foot.jspf" %>
