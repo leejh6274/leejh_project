@@ -143,7 +143,7 @@ INSERT INTO article
 select NOW(), now(), FLOOR(RAND() *2) + 1, FLOOR(RAND() *2) + 1, concat('제목_', rand()), CONCAT('내용_', RAND())
 from article;
 */
-
+`article`
 SELECT * FROM article;
 
 DESC article;
@@ -209,3 +209,112 @@ relId = 1,
 `point` = 1;
 
 SELECT * FROM reactionPoint;
+
+
+
+SELECT A.*,
+IFNULL(SUM(RP.point), 0) AS extra__sumReactionPoint,
+IFNULL(SUM(IF(RP.point &gt; 0, RP.point, 0)), 0) AS extra__goodReactionPoint,
+IFNULL(SUM(IF(RP.point &lt; 0, RP.point, 0)), 0) AS extra__badReactionPoint
+FROM(
+    SELECT A.*,
+    M.nickname AS extra__writerName
+    FROM article AS A
+    LEFT JOIN MEMBER AS M
+    ON A.memberId = M.id
+) AS A
+LEFT JOIN reactionPoint AS RP
+ON RP.relTypeCode = 'article'
+AND A.id = RP.relId
+GROUP BY A.id
+
+SELECT * FROM reactionPoint;
+
+# 게시물 테이블 goodReactionPoint 컬럼 추가
+ALTER TABLE article
+ADD COLUMN goodReactionPoint INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
+# 게시물 테이블 badReactionPoint 컬럼 추가
+ALTER TABLE article
+ADD COLUMN badReactionPoint INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
+
+SELECT RP.relTypeCode,
+RP.relId,
+SUM(IF(RP.point > 0, RP.point, 0)) AS goodReactionPoint,
+SUM(IF(RP.point < 0, RP.point * -1, 0)) AS badReactionPoint
+FROM reactionPoint AS RP
+GROUP BY RP.relTypeCode, RP.relId
+
+UPDATE article AS A 
+INNER JOIN (
+    SELECT RP.relId,
+    SUM(IF(RP.point > 0, RP.point, 0)) AS goodReactionPoint,
+    SUM(IF(RP.point < 0, RP.point * -1, 0)) AS badReactionPoint
+    FROM reactionPoint AS RP
+    WHERE relTypeCode = 'article'
+    GROUP BY RP.relTypeCode, RP.relId
+) AS RP_SUM
+ON A.id = RP_SUM.relId
+SET A.goodReactionPoint = RP_SUM.goodReactionPoint,
+A.badReactionPoint = RP_SUM.badReactionPoint;
+
+
+CREATE TABLE reply (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT(10) UNSIGNED NOT NULL,
+    relTypeCode CHAR(30) NOT NULL COMMENT '관련데이터타입코드',
+    relId INT(10) UNSIGNED NOT NULL COMMENT '관련데이터번호',
+    `body` TEXT NOT NULL
+);
+
+# 댓글 테스트 데이터
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+relTypeCode = 'article',
+relId = 1,
+`body` = '댓글 1';
+
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+relTypeCode = 'article',
+relId = 1,
+`body` = '댓글 2';
+
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+relTypeCode = 'article',
+relId = 2,
+`body` = '댓글 3';
+
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+relTypeCode = 'article',
+relId = 2,
+`body` = '댓글 4';
+
+
+SELECT * FROM reply;
+
+
+
+
+
+SELECT * FROM article;
+
+SET A.goodReactionPoint = ??
+A.badReactionPoint = ??
+
+
+
+/*truncate article;*/

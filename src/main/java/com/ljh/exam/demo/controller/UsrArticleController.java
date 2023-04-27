@@ -24,7 +24,7 @@ public class UsrArticleController {
    private ReactionPointService reactionPointService;
    private Rq rq;
    
-   public UsrArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+   public UsrArticleController(ArticleService articleService, BoardService boardService, ReactionPointService reactionPointService, Rq rq) {
 	   this.articleService = articleService;
 	   this.boardService = boardService;
 	   this.reactionPointService = reactionPointService;
@@ -94,11 +94,20 @@ public class UsrArticleController {
    public String showDetail(Model model, int id) {
 
 	  Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
+	  model.addAttribute("article", article);
 	  
-	  boolean actorCanMakeReactionPoint = reactionPointService.actorCanMakeReactionPoint(rq.getLoginedMemberId(), "article", id);
-	  
-	  model.addAttribute("actorCanMakeReactionPoint", actorCanMakeReactionPoint);
-      model.addAttribute("article", article);
+	  ResultData actorCanMakeReactionPointRd = reactionPointService.actorCanMakeReactionPoint(rq.getLoginedMemberId(), "article", id);
+      model.addAttribute("actorCanMakeReaction", actorCanMakeReactionPointRd.isSuccess());
+      
+      if(actorCanMakeReactionPointRd.getResultCode().equals("F-2")) {
+    	  int sumReactionPointByMemberId = (int) actorCanMakeReactionPointRd.getData1();     //좋아요 = 1, 싫어오 = -1
+    	  
+    	  if(sumReactionPointByMemberId > 0) {
+    		  model.addAttribute("actorCanCancelGoodReaction", true);
+    	  } else {
+    		  model.addAttribute("actorCanCancelBadReaction", true);
+    	  }
+      }
 
       return "usr/article/detail";
    }

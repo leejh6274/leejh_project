@@ -19,9 +19,6 @@ public class Article {
 	private int badReactionPoint;
 	
 	
-	private int extra__sumReactionPoint;
-	private int extra__goodReactionPoint;
-	private int extra__badReactionPoint;
 	private String extra__writerName;
 	private int extra__reactionPoint;
 	private boolean extra__actorCanDelete;
