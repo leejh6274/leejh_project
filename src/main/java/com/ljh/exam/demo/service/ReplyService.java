@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.ljh.exam.demo.repository.ReplyRepository;
 import com.ljh.exam.demo.utill.Ut;
+import com.ljh.exam.demo.vo.Article;
 import com.ljh.exam.demo.vo.Reply;
 import com.ljh.exam.demo.vo.ResultData;
 @Service
@@ -24,7 +25,50 @@ public class ReplyService {
 		 return ResultData.from("S-1", Ut.f("%d번 댓글이 생성되었습니다.", id), "id", id);
 	 }
 
-	public List<Reply> getForPrintReplies(int actorId, String string, int id) {
-		return replyRepository.getForPrintReplies(actorId, string, id);
+	public List<Reply> getForPrintReplies(int actorId, String relTypeCode, int relid) {
+		List<Reply> replies = replyRepository.getForPrintReplies(actorId, relTypeCode, relid);
+		
+		for(Reply reply : replies) {
+			updateForPrintData(actorId, reply);
+		}
+		
+		return replies;
 	}
+	
+	private void updateForPrintData(int actorId, Reply reply) {
+	      if( reply == null) {
+	         return;
+	      }
+	      ResultData actorCanDeleteRd = actorCanDelete(actorId, reply);
+	      reply.setExtra__actorCanDelete(actorCanDeleteRd.isSuccess());
+	      
+	      ResultData actorCanModifyRd = actorCanModify(actorId, reply);
+	      reply.setExtra__actorCanModify(actorCanModifyRd.isSuccess());
+	   }
+	
+	public ResultData actorCanModify(int actorId, Reply reply) {
+	      if (reply == null) {
+	         return ResultData.from("F-1", "댓글이 존재하지 않습니다.");
+	      }
+
+	      if (reply.getMemberId() != actorId) {
+	         return ResultData.from("F-2", "권한이 없습니다");
+	      }
+	      return ResultData.from("S-1", "댓글 수정이 가능합니다.");
+	   }
+	
+	public ResultData actorCanDelete(int actorId, Reply reply) {
+		if (reply == null) {
+			return ResultData.from("F-1", "댓글이 존재하지 않습니다");
+		}
+		
+		if (reply.getMemberId() != actorId) {
+			return ResultData.from("F-2", "권한이 없습니다");
+		}
+		return ResultData.from("S-1", "댓글 삭제이 가능합니다.");
+	}
+	
+	
 }
+
+
