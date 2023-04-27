@@ -52,6 +52,12 @@ public class Rq{
 	    
 	    this.req.setAttribute("rq", this);
     }
+	
+	public boolean isNotLogined() {
+		
+		return !isLogined;
+	}
+	
 
 	public void printHistroyBackjs(String msg) {/*
 		resp.setContentType("text/html; charset=UTF-8");             => js.jsp안에 자바스크립트로 등록해서 주석친 애들 필요 없어짐.
