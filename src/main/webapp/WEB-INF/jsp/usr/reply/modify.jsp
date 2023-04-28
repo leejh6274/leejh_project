@@ -38,7 +38,7 @@
         <tbody>
           <tr>
             <th>게시물 번호</th>
-            <td>${article.id}</td>
+            <td>${reply.relId}</td>
           </tr>
           <tr>
             <th>댓글 작성날짜</th>
