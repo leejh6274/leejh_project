@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ljh.exam.demo.service.MemberService;
@@ -11,9 +12,6 @@ import com.ljh.exam.demo.utill.Ut;
 import com.ljh.exam.demo.vo.Member;
 import com.ljh.exam.demo.vo.ResultData;
 import com.ljh.exam.demo.vo.Rq;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrMemberController {
@@ -82,7 +80,7 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(String loginId, String loginPw) {
+	public String doLogin(String loginId, String loginPw, @RequestParam(defaultValue="/") String afterLoginUri) {
 		
 		if(rq.isLogined()) {
 			return rq.jsHistoryBack("이미 로그인되었습니다.");
@@ -107,7 +105,7 @@ public class UsrMemberController {
 		
 		rq.login(member);  //rq야 너가 처리해라
 
-		return rq.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()),"/");
+		return rq.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), afterLoginUri);
 	}
 	
 
