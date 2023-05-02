@@ -2,22 +2,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="pageTitle" value="게시물 수정"/>
 <%@include file="../common/head.jspf" %>
+<%@include file="../../common/toastUiEditorLib.jspf" %>
 
 <script>
-	let ArticleModify__submitForm = false;
-	function ArticleModify__submitDone(form){
+	let ArticleModify__submitDone = false;
+	function ArticleModify__submit(form){
 		if (ArticleModify__submitDone) {
 			return;
 	}
 	
-	//좌우공백 제거
-	form.body.value = form.body.value.trim();
+	const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
+	const markdown = editor.getMarkdown().trim();
 	
-	if(form.body.value.length == 0){
+	if(markdown.length == 0){
 		alert('내용을 입력해주세요.');
-		form.body.focus();
+		editor.focus();
 		return;
 	}
+	
+	form.body.value = markdown;
 	
 	ArticleModify__submitDone = true;
 	form.submit();
@@ -27,8 +30,9 @@
 
 <section class="mt-5">
 	<div class="container mx-auto px-3">
-	<form class="table-box-type-1" method="POST" action="../article/doModify" onsubmit="ArticleModify__submit">
-	  <input type="hidden" name="memberModifyAuthKey" value="${param.memberModifyAuthKey }"/>
+	<form class="table-box-type-1" method="POST" action="../article/doModify" onsubmit="ArticleModify__submit(this); return false;">
+	  <input type="hidden" name="id" value="${article.id} "/>
+	  <input type="hidden" name="body"/>
       <table>
       <colgroup>
         <col width="200"/>
@@ -71,7 +75,9 @@
           <tr>
             <th>내용</th>
             <td>
-            	<textarea class="w-full textarea textarea-bordered" name="body" placeholder="내용" >${article.body }</textarea>
+            	<div class="toast-ui-editor">
+            		<script type="text/x-template">${article.body}</script> 
+            	</div>
             </td>
           </tr>
           <tr>

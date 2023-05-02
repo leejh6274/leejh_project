@@ -63,7 +63,7 @@ public class MemberService {
 		return ResultData.from("S-1", "회원정보가 수정되었습니다.");
 	}
 
-	public String genMemberModifyAuthKey(int id) {
+	public String getMemberModifyAuthKey(int id) {
 		String memberModifyAuthKey = Ut.getTempPassword(10);
 		
 		attrService.setValue("member", id, "extra", "memberModifyAuthKey", memberModifyAuthKey, Ut.getDateStrLater(60 * 5));

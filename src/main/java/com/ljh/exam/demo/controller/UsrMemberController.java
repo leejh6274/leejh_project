@@ -137,7 +137,7 @@ public class UsrMemberController {
 		
 		
 		if(replaceUri.equals("../member/modify")) {
-			String memberModifyAuthKey = memberService.genMemberModifyAuthKey(rq.getLoginedMemberId());
+			String memberModifyAuthKey = memberService.getMemberModifyAuthKey(rq.getLoginedMemberId());
 			
 			replaceUri += "?memberModifyAuthKey=" + memberModifyAuthKey;
 		}
