@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 		  
 		  if(rq.isLogined()) {
 
-			  rq.printHistroyBackjs("로그아웃 후 이용해주세요.");
+			  rq.printHistoryBackJs("로그아웃 후 이용해주세요.");
 			  return false;
 		  }
 		   

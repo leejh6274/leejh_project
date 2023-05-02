@@ -38,13 +38,13 @@ public class UsrArticleController {
    // 액션 메서드 시작
    @RequestMapping("/usr/article/doWrite")
    @ResponseBody
-   public String doWrite(int boardId, String title, String body, String replaceUri) {
+   public String doWrite(@RequestParam(defaultValue = "1") int boardId, String title, String body, String replaceUri) {
       if (Ut.empty(title)) {
          return rq.jsHistoryBack("title(을)를 입력해주세요.");
 
       }
 
-      if (Ut.empty(body)) {
+      if (!Ut.empty(body)) {
          return rq.jsHistoryBack("body(을)를 입력해주세요.");
 
       }
@@ -74,7 +74,7 @@ public class UsrArticleController {
 	  Board board = boardService.getBoardById(boardId);
 	  
 	  if(board == null) {
-		  return rq.historyBackJsOnview(Ut.f("%d번 게시판은 존재하지 않습니다.", boardId));
+		  return rq.historyBackJsOnView(Ut.f("%d번 게시판은 존재하지 않습니다.", boardId));
 	  }
 	  
 	  
@@ -180,13 +180,13 @@ public class UsrArticleController {
       Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
       if (article == null) {
-         return rq.historyBackJsOnview(Ut.f("%d번 게시물이 존재하지 않습니다.",id));
+         return rq.historyBackJsOnView(Ut.f("%d번 게시물이 존재하지 않습니다.",id));
       }
 
       ResultData actorCanModifyRd = articleService.actorCanModify(rq.getLoginedMemberId(), article);
 
       if (actorCanModifyRd.isFail()) {
-         return rq.historyBackJsOnview(actorCanModifyRd.getMsg());
+         return rq.historyBackJsOnView(actorCanModifyRd.getMsg());
       }
 
       model.addAttribute("article", article);

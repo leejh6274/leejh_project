@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 		   
 		  
 		  if(!rq.isLogined()) {
-			  String afterLoginUri = rq.getEncodedCurrentUri();
+			  String afterLoginUri = rq.getLoginUri();
 			  rq.printReplaceJs("로그인 후 이용해주세요.", "../member/login?afterLoginUri=" + afterLoginUri);
 			  return false;
 		  }
