@@ -3,23 +3,27 @@
 <c:set var="pageTitle" value="회원가입"/>
 <%@include file="../common/head.jspf" %>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
 <script>
 	let MemberJoin__submitDone = false;
+	let validLoginId = "";
 	function MemberJoin__submit(form){
 		if (MemberJoin__submitDone) {
 			alert('처리중입니다..');
 			return;
-	}
-	
-		if (MemberJoin__submitDone) {
-			alert('처리중입니다..');
-			return;
 		}
-		
+	
 		form.loginId.value = form.loginId.value.trim();
 
 		if(form.loginId.value.length == 0){
 			alert('아이디를 입력해주세요.');
+			form.loginId.focus();
+			return;
+		}
+		
+		if(form.loginId.value != validLoginId){
+			alert('올바르지 않은 아이디입니다. 아이디를 다시 입력해주세요.');
 			form.loginId.focus();
 			return;
 		}
@@ -73,11 +77,43 @@
 			alert('휴대전화번호를 입력해주세요.');
 			form.cellphoneNo.focus();
 		}
-	}
 	
-	MemberJoin__submitDone = true;
-	form.submit();
-}
+		MemberJoin__submitDone = true;
+		form.submit();
+	}
+
+	function checkLoginIdDup(el){
+		const form = $(el).closest('form').get(0);
+		
+		if(form.loginId.value.length == 0){
+			validLoginId = '';
+			return;
+		}
+		
+		if(validLoginId == form.loginId.value){
+			return;
+		}
+		
+		$('.loginId-msg').html('<div class="mt-2">체크중....</div>');
+		
+		
+		$.get('../member/getLoginIdDup', {
+			isAjax : 'Y',
+			loginId : form.loginId.value
+		}, function(data){
+			$('.loginId-msg').html('<div class="mt-2">' + data.msg + '</div>');
+
+			if(data.success){
+				validLoginId = data.data1;
+			} else {
+				validLoginId = '';
+			}
+		}, 'json');
+	}
+
+	const checkLoginIdDupDebounced = _.debounced(checkLoginIdDup, 1000);
+	
+	
 </script>
 
 
@@ -93,7 +129,8 @@
           <tr>
             <th>로그인아이디</th>
             <td>
-            	<input type="text" class="input input-bordered " name="loginId" placeholder="아이디를 입력해주세요."/>
+            	<input type="text" class="input input-bordered " name="loginId" placeholder="아이디를 입력해주세요." onkeyup="checkLoginIdDupDebounced(this);" autocomplete="off"/>
+            	<div class="loginId-msg"></div>
             </td>
           </tr>
         
